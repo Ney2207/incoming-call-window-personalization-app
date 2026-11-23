@@ -8,10 +8,11 @@
 [![Android API](https://img.shields.io/badge/Android-API%2026%E2%80%9336%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com/)
 [![iOS Ready](https://img.shields.io/badge/iOS-KMP%20Ready-000000?style=for-the-badge&logo=apple&logoColor=white)](https://kotlinlang.org/docs/multiplatform.html)
 [![Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20KMP-orange?style=for-the-badge)](#%EF%B8%8F-modular-architecture)
+[![License](https://img.shields.io/badge/License-Custom%20(Non--Commercial)-crimson?style=for-the-badge)](LICENSE.md)
 
 **Intercept cellular and VoIP calls (WhatsApp, Telegram, SIM) and render hardware-accelerated, contact-specific looping video call screens in under 200 ms.**
 
-[Features](#-key-features) • [Platform Matrix](#-platform-capabilities--technical-realities) • [Architecture](#%EF%B8%8F-modular-architecture) • [Development Pipeline](#-7-block-serial-development-pipeline) • [Setup & Permissions](#-getting-started)
+[Features](#-key-features) • [Platform Matrix](#-platform-capabilities--technical-realities) • [Architecture](#%EF%B8%8F-modular-architecture) • [Development Pipeline](#-7-block-serial-development-pipeline) • [Setup & Permissions](#-getting-started) • [License](#-license)
 
 </div>
 
@@ -168,9 +169,18 @@ Contributions must respect the module dependency boundaries defined in [Modular 
 2. Any change to public interfaces in `:core:model` requires updating unit tests and documenting the contract revision.
 3. Ensure all video resources allocated in `VideoBackgroundPlayer` are deterministically released on lifecycle termination.
 
+**Contributor License Grant:** Unless accompanied by a separate written agreement, submitting any contribution to this repository grants the copyright holder (**Ney Cordovez**) an irrevocable, worldwide, non-exclusive, royalty-free right to use, reproduce, modify, distribute, and sublicense the contribution for any purpose, as detailed in Section 5 of [LICENSE.md](LICENSE.md). Contributors are responsible for ensuring they hold the necessary rights to submit their contributions.
+
 ---
 
 ## 📄 License
 
-Distributed under the **MIT License**. See `LICENSE` for more information.# incoming-call-window-personalization-app
-An app I'm developing 'cause I want some Hatsune Miku reel playing for free when I receive a call.
+**Copyright © 2026 Ney Cordovez. All Rights Reserved.**
+
+This project is distributed under a **Custom Software License** (see [LICENSE.md](LICENSE.md) for full legal terms):
+
+* **✅ Personal & Educational Use:** You are granted a non-exclusive, revocable license to use, run, copy, modify, and redistribute this software strictly for private, educational, research, training, or non-commercial purposes.
+* **🔄 Redistribution Conditions:** Any redistribution must preserve `LICENSE.md` and copyright notices, clearly identify any modifications made, attribute **Ney Cordovez** with a link to the original repository, remain under the exact same license terms, and avoid implying endorsement.
+* **🚫 Commercial Use Restricted:** Commercial use, monetization, sublicensing, or deployment as part of a paid product or business operation is strictly prohibited without prior written permission from the copyright holder.
+
+For commercial licensing inquiries, contact: **[22.mashiro.07@gmail.com](mailto:22.mashiro.07@gmail.com)**
