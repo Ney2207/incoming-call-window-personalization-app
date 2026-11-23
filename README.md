@@ -175,7 +175,7 @@ Contributions must respect the module dependency boundaries defined in [Modular 
 
 ## 📄 License
 
-**Copyright © 2026 Ney Cordovez. All Rights Reserved.**
+**Copyright © 2026 Ney Cordovéz. All Rights Reserved.**
 
 This project is distributed under a **Custom Software License** (see [LICENSE.md](LICENSE.md) for full legal terms):
 
