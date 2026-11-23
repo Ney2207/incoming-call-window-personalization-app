@@ -1,6 +1,6 @@
 # Custom Software License
 
-Copyright (c) 2026 Ney Cordovéz
+Copyright (c) 2026 Ney Cordovez
 
 ## 1. Definitions
 

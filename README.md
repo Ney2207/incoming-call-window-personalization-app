@@ -169,18 +169,18 @@ Contributions must respect the module dependency boundaries defined in [Modular 
 2. Any change to public interfaces in `:core:model` requires updating unit tests and documenting the contract revision.
 3. Ensure all video resources allocated in `VideoBackgroundPlayer` are deterministically released on lifecycle termination.
 
-**Contributor License Grant:** Unless accompanied by a separate written agreement, submitting any contribution to this repository grants the copyright holder (**Ney Cordovéz**) an irrevocable, worldwide, non-exclusive, royalty-free right to use, reproduce, modify, distribute, and sublicense the contribution for any purpose, as detailed in Section 5 of [LICENSE.md](LICENSE.md). Contributors are responsible for ensuring they hold the necessary rights to submit their contributions.
+**Contributor License Grant:** Unless accompanied by a separate written agreement, submitting any contribution to this repository grants the copyright holder (**Ney Cordovez**) an irrevocable, worldwide, non-exclusive, royalty-free right to use, reproduce, modify, distribute, and sublicense the contribution for any purpose, as detailed in Section 5 of [LICENSE.md](LICENSE.md). Contributors are responsible for ensuring they hold the necessary rights to submit their contributions.
 
 ---
 
 ## 📄 License
 
-**Copyright © 2026 Ney Cordovéz. All Rights Reserved.**
+**Copyright © 2026 Ney Cordovez. All Rights Reserved.**
 
 This project is distributed under a **Custom Software License** (see [LICENSE.md](LICENSE.md) for full legal terms):
 
 * **✅ Personal & Educational Use:** You are granted a non-exclusive, revocable license to use, run, copy, modify, and redistribute this software strictly for private, educational, research, training, or non-commercial purposes.
-* **🔄 Redistribution Conditions:** Any redistribution must preserve `LICENSE.md` and copyright notices, clearly identify any modifications made, attribute **Ney Cordovéz** with a link to the original repository, remain under the exact same license terms, and avoid implying endorsement.
+* **🔄 Redistribution Conditions:** Any redistribution must preserve `LICENSE.md` and copyright notices, clearly identify any modifications made, attribute **Ney Cordovez** with a link to the original repository, remain under the exact same license terms, and avoid implying endorsement.
 * **🚫 Commercial Use Restricted:** Commercial use, monetization, sublicensing, or deployment as part of a paid product or business operation is strictly prohibited without prior written permission from the copyright holder.
 
 For commercial licensing inquiries, contact: **[22.mashiro.07@gmail.com](mailto:22.mashiro.07@gmail.com)**
