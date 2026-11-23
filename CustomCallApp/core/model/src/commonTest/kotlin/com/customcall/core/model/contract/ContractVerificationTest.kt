@@ -129,8 +129,8 @@ class ContractVerificationTest {
     private class InMemoryCallRepository(
         private val builtInTheme: CallThemeConfig
     ) : CallRepository {
-        private val themes = MutableStateFlow>(emptyMap())
-        private val rules = MutableStateFlow>(emptyMap())
+        private val themes = MutableStateFlow<Map<String, CallThemeConfig>>(emptyMap())
+        private val rules = MutableStateFlow<Map<String, ContactRule>>(emptyMap())
         private val settings = MutableStateFlow(AppSettings())
 
         override fun observeThemes(): Flow<List<CallThemeConfig>> =

@@ -1,6 +1,6 @@
 # Custom Software License
 
-Copyright (c) 2026 Ney Cordovez
+Copyright (c) 2026 Ney Cordovéz
 
 ## 1. Definitions
 
@@ -110,11 +110,13 @@ THE COPYRIGHT HOLDER'S TOTAL LIABILITY SHALL NOT EXCEED THE AMOUNT YOU PAID FOR
 A LICENSE OR COPY OF THE SOFTWARE, WHICH SHALL BE ZERO FOR COPYING UNDER THIS
 LICENSE.
 
-## 10. Governing Law
+## 10. Governing Law and Jurisdiction
 
-This License is governed by the laws of [COUNTRY, STATE, OR REGION], without
-regarding conflict-of-law principles. Mandatory consumer rights that cannot
-lawfully be waived remain unaffected.
+This License is governed by the laws of the Bolivarian Republic of Venezuela,
+without regard to its conflict-of-law principles. Any dispute arising from or
+related to this License shall be subject to the exclusive jurisdiction of the
+courts located in Caracas. Mandatory consumer rights that cannot lawfully be
+waived remain unaffected.
 
 ## 11. Interpretation
 

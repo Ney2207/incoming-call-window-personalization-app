@@ -1,0 +1,78 @@
+# Gradle JVM (JDK 17 or 21 recommended for Gradle 8.x / AGP 8.x)
+org.gradle.java.home=C:/Program Files/Microsoft/jdk-21.0.13.102-hotspot
+
+# Gradle Performance & Caching
+org.gradle.jvmargs=-Xmx4096m -Dfile.encoding=UTF-8
+org.gradle.parallel=true
+org.gradle.caching=true
+org.gradle.configuration-cache=true
+
+# Kotlin & Multiplatform
+kotlin.code.style=official
+kotlin.mpp.enableCInteropCommonization=true
+kotlin.mpp.androidSourceSetLayoutVersion=2
+
+# AndroidX
+android.useAndroidX=true
+android.nonTransitiveRClass=true
+
+# Tooling
+org.gradle.tooling.parallel=true
+```[cite: 3]
+
+### Apply Automatically and Test the Build
+
+Run this from `CustomCallApp` to detect an installed JDK 17/21 (or download portable Eclipse Temurin JDK 21 into `%USERPROFILE%\.jdks` if missing), update `org.gradle.java.home` in `gradle.properties`, restart the daemon, and run `assembleDebug`:
+
+```powershell
+$searchRoots = @(
+    "$env:USERPROFILE\.jdks",
+    "C:\Program Files\Java",
+    "C:\Program Files\Eclipse Adoptium",
+    "C:\Program Files\Microsoft",
+    "C:\Program Files\Zulu",
+    "C:\Program Files\Amazon Corretto",
+    "C:\Program Files\BellSoft"
+)
+
+$jdkPath = $searchRoots |
+    Where-Object { Test-Path $_ } |
+    ForEach-Object { Get-ChildItem $_ -Directory -ErrorAction SilentlyContinue } |
+    Where-Object {
+        (Test-Path "$($_.FullName)\bin\java.exe") -and
+        (Test-Path "$($_.FullName)\release") -and
+        ((Get-Content "$($_.FullName)\release" -Raw) -match 'JAVA_VERSION="(17|21)\.')
+    } |
+    Select-Object -First 1 -ExpandProperty FullName
+
+if (-not $jdkPath) {
+    $jdksDir = "$env:USERPROFILE\.jdks"
+    New-Item -ItemType Directory -Path $jdksDir -Force | Out-Null
+    $jdkZip = "$env:TEMP\temurin-21-jdk.zip"
+    Invoke-WebRequest -Uri "https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jdk/hotspot/normal/eclipse" -OutFile $jdkZip
+    Expand-Archive -Path $jdkZip -DestinationPath $jdksDir -Force
+    Remove-Item $jdkZip -Force -ErrorAction SilentlyContinue
+
+    $jdkPath = Get-ChildItem $jdksDir -Directory |
+        Where-Object { $_.Name -like "jdk-21*" -and (Test-Path "$($_.FullName)\bin\java.exe") } |
+        Select-Object -First 1 -ExpandProperty FullName
+}
+
+if (-not $jdkPath) {
+    throw "No JDK 17 or 21 found or downloaded."
+}
+
+$gradleJavaHome = $jdkPath -replace '\\', '/'
+$propsPath = ".\gradle.properties"
+$content = Get-Content $propsPath -Raw
+
+if ($content -match '(?m)^org\.gradle\.java\.home=.*$') {
+    $content = $content -replace '(?m)^org\.gradle\.java\.home=.*$', "org.gradle.java.home=$gradleJavaHome"
+} else {
+    $content = "org.gradle.java.home=$gradleJavaHome`r`n`r`n" + $content.TrimStart()
+}
+
+Set-Content -Path $propsPath -Value $content -NoNewline
+
+.\gradlew.bat --stop
+.\gradlew.bat assembleDebug
