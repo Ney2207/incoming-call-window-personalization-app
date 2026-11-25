@@ -1,0 +1,30 @@
+CustomCallApp/
+├── gradle/
+│   └── libs.versions.toml                          # Centralized dependency & plugin catalog
+├── settings.gradle.kts                             # Multi-module project declarations
+├── core/
+│   ├── model/                                      # [Block 1 — Frozen Contract v1.0.0]
+│   │   ├── INTEGRATION.md
+│   │   └── src/commonMain/kotlin/com/customcall/core/model/
+│   │       ├── CallEnums.kt                        # CallSource, CallState, ButtonStyleType
+│   │       ├── CallModels.kt                       # IncomingCallEvent, CallThemeConfig, ContactRule, AppSettings
+│   │       ├── MediaModels.kt                      # VideoProcessingRequest, ProcessedVideoAsset, VideoProcessingState
+│   │       ├── contract/                           # CallRepository, VideoAssetProcessor, CallEventDispatcher, CallActionExecutor
+│   │       └── util/
+│   │           └── IdentifierNormalizer.kt         # Canonical phone & display name normalization
+│   ├── database/                                   # [Block 2 — Completed through Step 2]
+│   │   ├── build.gradle.kts                        # [Step 1] KMP, Room, KSP & Koin build config
+│   │   └── src/
+│   │       └── commonMain/kotlin/com/customcall/core/database/
+│   │           ├── converter/
+│   │           │   └── DatabaseTypeConverters.kt   # [Step 2] Enum & Set<T> SQLite converters
+│   │           └── entity/
+│   │               ├── AppSettingsEntity.kt        # [Step 2] Singleton app_settings table + mappers
+│   │               ├── ContactRuleEntity.kt        # [Step 2] Indexed contact_rules table + mappers
+│   │               └── ThemeEntity.kt              # [Step 2] themes table + mappers
+│   └── media/                                      # [Block 3 — Pending]
+├── feature/
+│   ├── call-screen/                                # [Block 4 — Pending]
+│   ├── customizer/                                 # [Block 5 — Pending]
+│   └── interceptor/                                # [Block 6 — Pending]
+└── composeApp/                                     # [Block 7 — Pending]
