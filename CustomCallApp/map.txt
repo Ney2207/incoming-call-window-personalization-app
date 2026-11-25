@@ -1,30 +1,62 @@
 CustomCallApp/
 ├── gradle/
-│   └── libs.versions.toml                          # Centralized dependency & plugin catalog
-├── settings.gradle.kts                             # Multi-module project declarations
+│   └── libs.versions.toml                                  # Centralized dependency & plugin catalog[cite: 3]
+├── settings.gradle.kts                                     # Multi-module project declarations[cite: 4]
 ├── core/
-│   ├── model/                                      # [Block 1 — Frozen Contract v1.0.0]
-│   │   ├── INTEGRATION.md
+│   ├── model/                                              # [Block 1 — Frozen Contract v1.0.0]
+│   │   ├── INTEGRATION.md                                  # Block 1 handoff spec[cite: 1, 2]
 │   │   └── src/commonMain/kotlin/com/customcall/core/model/
-│   │       ├── CallEnums.kt                        # CallSource, CallState, ButtonStyleType
-│   │       ├── CallModels.kt                       # IncomingCallEvent, CallThemeConfig, ContactRule, AppSettings
-│   │       ├── MediaModels.kt                      # VideoProcessingRequest, ProcessedVideoAsset, VideoProcessingState
-│   │       ├── contract/                           # CallRepository, VideoAssetProcessor, CallEventDispatcher, CallActionExecutor
+│   │       ├── CallEnums.kt                                # CallSource, CallState, ButtonStyleType[cite: 2]
+│   │       ├── CallModels.kt                               # IncomingCallEvent, CallThemeConfig, ContactRule, AppSettings[cite: 2]
+│   │       ├── MediaModels.kt                              # VideoProcessingRequest, ProcessedVideoAsset, VideoProcessingState[cite: 2]
+│   │       ├── contract/
+│   │       │   ├── CallActionExecutor.kt                   # Action execution boundary interface[cite: 2]
+│   │       │   ├── CallEventDispatcher.kt                  # Event stream boundary interface[cite: 2]
+│   │       │   ├── CallRepository.kt                       # Persistence & rule resolution contract[cite: 2, 5]
+│   │       │   └── VideoAssetProcessor.kt                  # Media transcoding boundary interface[cite: 2]
 │   │       └── util/
-│   │           └── IdentifierNormalizer.kt         # Canonical phone & display name normalization
-│   ├── database/                                   # [Block 2 — Completed through Step 2]
-│   │   ├── build.gradle.kts                        # [Step 1] KMP, Room, KSP & Koin build config
+│   │           └── IdentifierNormalizer.kt                 # Canonical phone & display name normalizer[cite: 2]
+│   ├── database/                                           # [Block 2 — Completed & Verified]
+│   │   ├── build.gradle.kts                                # KMP, Room, KSP & Koin build config
+│   │   ├── INTEGRATION.md                                  # Block 2 1-page handoff spec
+│   │   ├── schemas/
+│   │   │   └── com.customcall.core.database.AppDatabase/
+│   │   │       └── 1.json                                  # Auto-generated Room schema snapshot
 │   │   └── src/
-│   │       └── commonMain/kotlin/com/customcall/core/database/
-│   │           ├── converter/
-│   │           │   └── DatabaseTypeConverters.kt   # [Step 2] Enum & Set<T> SQLite converters
-│   │           └── entity/
-│   │               ├── AppSettingsEntity.kt        # [Step 2] Singleton app_settings table + mappers
-│   │               ├── ContactRuleEntity.kt        # [Step 2] Indexed contact_rules table + mappers
-│   │               └── ThemeEntity.kt              # [Step 2] themes table + mappers
-│   └── media/                                      # [Block 3 — Pending]
+│   │       ├── commonMain/kotlin/com/customcall/core/database/
+│   │       │   ├── AppDatabase.kt                          # Room DB definition & BundledSQLiteDriver builder[cite: 1]
+│   │       │   ├── converter/
+│   │       │   │   └── DatabaseTypeConverters.kt           # Enum & Set<T> SQLite type converters
+│   │       │   ├── dao/
+│   │       │   │   ├── AppSettingsDao.kt                   # Singleton app_settings DAO
+│   │       │   │   ├── ContactRuleDao.kt                   # Indexed contact_rules DAO[cite: 6]
+│   │       │   │   └── ThemeDao.kt                         # themes table DAO
+│   │       │   ├── di/
+│   │       │   │   └── DatabaseModule.kt                   # Koin databaseModule + expect platformDatabaseModule[cite: 1]
+│   │       │   ├── entity/
+│   │       │   │   ├── AppSettingsEntity.kt                # app_settings entity & mappers[cite: 1]
+│   │       │   │   ├── ContactRuleEntity.kt                # contact_rules entity (indexed) & mappers[cite: 1]
+│   │       │   │   └── ThemeEntity.kt                      # themes entity & mappers[cite: 1]
+│   │       │   ├── repository/
+│   │       │   │   └── CallRepositoryImpl.kt               # CallRepository implementation[cite: 1, 7]
+│   │       │   └── resolver/
+│   │       │       ├── DefaultThemeProvider.kt             # Safe built-in fallback theme
+│   │       │       └── ThemeRuleResolver.kt                # Sub-5ms in-memory rule resolution engine[cite: 1]
+│   │       ├── androidMain/kotlin/com/customcall/core/database/
+│   │       │   ├── DatabaseBuilder.android.kt              # Android Room builder (custom_call.db)
+│   │       │   └── di/
+│   │       │       └── DatabaseModule.android.kt           # actual platformDatabaseModule (Android)
+│   │       ├── iosMain/kotlin/com/customcall/core/database/
+│   │       │   ├── DatabaseBuilder.ios.kt                  # iOS Room builder (NSDocumentDirectory)
+│   │       │   └── di/
+│   │       │       └── DatabaseModule.ios.kt               # actual platformDatabaseModule (iOS)
+│   │       └── commonTest/kotlin/com/customcall/core/database/
+│   │           ├── CallRepositoryTest.kt                   # CRUD, cascade delete & settings tests
+│   │           ├── InMemoryTestDaos.kt                     # Multiplatform in-memory test DAOs
+│   │           └── ThemeRuleResolverTest.kt                # Priority tiers & < 5 ms benchmark test[cite: 1]
+│   └── media/                                              # [Block 3 — Next][cite: 1]
 ├── feature/
-│   ├── call-screen/                                # [Block 4 — Pending]
-│   ├── customizer/                                 # [Block 5 — Pending]
-│   └── interceptor/                                # [Block 6 — Pending]
-└── composeApp/                                     # [Block 7 — Pending]
+│   ├── call-screen/                                        # [Block 4 — Pending][cite: 1]
+│   ├── customizer/                                         # [Block 5 — Pending][cite: 1]
+│   └── interceptor/                                        # [Block 6 — Pending][cite: 1]
+└── composeApp/                                             # [Block 7 — Pending][cite: 1]
