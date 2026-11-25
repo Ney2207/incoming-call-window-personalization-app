@@ -1,0 +1,178 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "a2f9626488d649f9a22869d2349d222b",
+    "entities": [
+      {
+        "tableName": "themes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `videoUri` TEXT NOT NULL, `isMuted` INTEGER NOT NULL, `overlayGradientAlpha` REAL NOT NULL, `buttonStyle` TEXT NOT NULL, `accentColorHex` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "videoUri",
+            "columnName": "videoUri",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isMuted",
+            "columnName": "isMuted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "overlayGradientAlpha",
+            "columnName": "overlayGradientAlpha",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "buttonStyle",
+            "columnName": "buttonStyle",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accentColorHex",
+            "columnName": "accentColorHex",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "contact_rules",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `callerIdentifier` TEXT NOT NULL, `normalizedName` TEXT NOT NULL, `sourceFilter` TEXT, `themeId` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "callerIdentifier",
+            "columnName": "callerIdentifier",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "normalizedName",
+            "columnName": "normalizedName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceFilter",
+            "columnName": "sourceFilter",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "themeId",
+            "columnName": "themeId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_contact_rules_callerIdentifier",
+            "unique": false,
+            "columnNames": [
+              "callerIdentifier"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_contact_rules_callerIdentifier` ON `${TABLE_NAME}` (`callerIdentifier`)"
+          },
+          {
+            "name": "index_contact_rules_normalizedName",
+            "unique": false,
+            "columnNames": [
+              "normalizedName"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_contact_rules_normalizedName` ON `${TABLE_NAME}` (`normalizedName`)"
+          },
+          {
+            "name": "index_contact_rules_themeId",
+            "unique": false,
+            "columnNames": [
+              "themeId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_contact_rules_themeId` ON `${TABLE_NAME}` (`themeId`)"
+          }
+        ]
+      },
+      {
+        "tableName": "app_settings",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `defaultThemeId` TEXT, `enabledSources` TEXT NOT NULL, `customVoipPackages` TEXT NOT NULL, `isOnboardingCompleted` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultThemeId",
+            "columnName": "defaultThemeId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "enabledSources",
+            "columnName": "enabledSources",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customVoipPackages",
+            "columnName": "customVoipPackages",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isOnboardingCompleted",
+            "columnName": "isOnboardingCompleted",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a2f9626488d649f9a22869d2349d222b')"
+    ]
+  }
+}
