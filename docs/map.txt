@@ -1,70 +1,132 @@
 CustomCallApp/
 ├── build.gradle.kts
-├── settings.gradle.kts
+├── settings.gradle.kts                                              # Registers all 7 modules + type-safe accessors
 ├── gradle/
-│   ├── libs.versions.toml
-│   └── wrapper/
+│   └── libs.versions.toml                                           # Centralized KMP, Compose, Room, Media3 & Koin catalog
 │
 ├── core/
-│   ├── model/                                          # [Block 1 — Frozen v1.0.0]
+│   ├── model/                                                       # [Block 1 — Complete] Pure KMP contracts & models
 │   │   ├── build.gradle.kts
 │   │   ├── INTEGRATION.md
 │   │   ├── HANDOFF_MANIFEST.md
 │   │   └── src/
-│   │       ├── commonMain/kotlin/com/customcall/core/model/...
-│   │       └── commonTest/kotlin/com/customcall/core/model/...
+│   │       ├── commonMain/kotlin/com/customcall/core/model/
+│   │       │   ├── AppSettings.kt                                   # Enabled call sources, custom VoIP packages, defaults
+│   │       │   ├── ButtonStyleType.kt                               # CLASSIC_DUAL, SWIPE_PILL, MINIMAL_GESTURE
+│   │       │   ├── CallSource.kt                                    # PHONE_GSM, WHATSAPP, WHATSAPP_BUSINESS, TELEGRAM, OTHER_VOIP
+│   │       │   ├── CallState.kt                                     # RINGING, ANSWERED, DECLINED, ENDED
+│   │       │   ├── CallThemeConfig.kt                               # Video URI, mute flag, scrim alpha, button style, accent
+│   │       │   ├── ContactRule.kt                                   # Contact-specific theme overrides
+│   │       │   ├── IncomingCallEvent.kt                             # Immutable incoming call payload
+│   │       │   ├── contract/
+│   │       │   │   ├── CallActionExecutor.kt                        # Answer/decline platform bridge interface
+│   │       │   │   ├── CallEventDispatcher.kt                       # Reactive incoming call StateFlow contract
+│   │       │   │   ├── CallRepository.kt                            # Persistence & <5ms theme resolution contract
+│   │       │   │   └── VideoAssetProcessor.kt                       # Background video transcoding contract
+│   │       │   └── util/
+│   │       │       └── IdentifierNormalizer.kt                      # Phone number & VoIP handle canonicalization
+│   │       └── commonTest/kotlin/com/customcall/core/model/         # Model & normalization unit tests
 │   │
-│   ├── database/                                       # [Block 2 — Frozen v1.0.0]
+│   ├── database/                                                    # [Block 2 — Complete] Room Multiplatform persistence
 │   │   ├── build.gradle.kts
 │   │   ├── INTEGRATION.md
 │   │   ├── HANDOFF_MANIFEST.md
 │   │   └── src/
-│   │       ├── commonMain/kotlin/com/customcall/core/database/...
-│   │       ├── androidMain/kotlin/com/customcall/core/database/...
-│   │       ├── iosMain/kotlin/com/customcall/core/database/...
-│   │       └── commonTest/kotlin/com/customcall/core/database/...
+│   │       ├── commonMain/kotlin/com/customcall/core/database/      # Entities, DAOs, CallRepositoryImpl & databaseModule
+│   │       ├── androidMain/kotlin/com/customcall/core/database/     # Android SQLite/Room database builder
+│   │       ├── iosMain/kotlin/com/customcall/core/database/         # iOS SQLite/Room database builder
+│   │       └── commonTest/kotlin/com/customcall/core/database/      # Repository & <5ms rule-resolution tests
 │   │
-│   └── media/                                          # [Block 3 — Frozen v1.0.0]
+│   └── media/                                                       # [Block 3 — Complete] Media3 video engine & transcoder
 │       ├── build.gradle.kts
 │       ├── INTEGRATION.md
 │       ├── HANDOFF_MANIFEST.md
 │       └── src/
-│           ├── commonMain/kotlin/com/customcall/core/media/...
-│           ├── androidMain/kotlin/com/customcall/core/media/...
-│           ├── iosMain/kotlin/com/customcall/core/media/...
-│           ├── commonTest/kotlin/com/customcall/core/media/...
-│           ├── androidUnitTest/kotlin/com/customcall/core/media/...
-│           └── androidInstrumentedTest/kotlin/com/customcall/core/media/...
+│           ├── commonMain/kotlin/com/customcall/core/media/         # VideoBackgroundPlayer expect & mediaModule
+│           ├── androidMain/kotlin/com/customcall/core/media/        # ExoPlayer SurfaceView player & Transformer processor
+│           ├── iosMain/kotlin/com/customcall/core/media/            # AVQueuePlayer / UIKitView stub implementation
+│           └── commonTest/kotlin/com/customcall/core/media/         # Media processing & playback tests
 │
 ├── feature/
-│   ├── call-screen/                                    # [Block 4 — Completed v1.0.0]
+│   ├── call-screen/                                                 # [Block 4 — Complete] Full-screen incoming call UI
 │   │   ├── build.gradle.kts
 │   │   ├── INTEGRATION.md
 │   │   ├── HANDOFF_MANIFEST.md
 │   │   └── src/
 │   │       ├── commonMain/kotlin/com/customcall/feature/callscreen/
-│   │       │   ├── IncomingCallScreen.kt
-│   │       │   ├── theme/
-│   │       │   │   └── CallThemeUtils.kt
-│   │       │   └── components/
-│   │       │       ├── CallBackgroundLayers.kt
-│   │       │       ├── CallSourceBadge.kt
-│   │       │       ├── CallerIdentityHeader.kt
-│   │       │       └── controls/
-│   │       │           ├── ClassicDualControls.kt
-│   │       │           ├── SwipePillControls.kt
-│   │       │           ├── MinimalGestureControls.kt
-│   │       │           └── CallControlsDispatcher.kt
-│   │       ├── androidDebug/kotlin/com/customcall/feature/callscreen/preview/
-│   │       │   └── IncomingCallScreenPreviews.kt
-│   │       └── commonTest/kotlin/com/customcall/feature/callscreen/
-│   │           └── CallThemeUtilsTest.kt
+│   │       │   ├── IncomingCallScreen.kt                            # 4-layer edge-to-edge call UI composable
+│   │       │   ├── components/
+│   │       │   │   ├── CallContrastScrimLayer.kt                    # Top & bottom WCAG readability gradients
+│   │       │   │   ├── CallVideoLayer.kt                            # Looping video + opaque fallback backdrop
+│   │       │   │   ├── CallerIdentityHeader.kt                      # Source badge, avatar/monogram & ringing status
+│   │       │   │   └── controls/
+│   │       │   │       └── CallControlsDispatcher.kt                # Classic Dual, Swipe Pill & Minimal Gesture controls
+│   │       │   └── theme/                                           # Color hex conversion helpers
+│   │       └── commonTest/kotlin/com/customcall/feature/callscreen/ # UI state & control interaction tests
 │   │
-│   ├── customizer/                                     # [Block 5 — Next Up]
-│   │   └── build.gradle.kts
+│   ├── customizer/                                                  # [Block 5 — Complete] Theme Studio, Rules & Wizard
+│   │   ├── build.gradle.kts
+│   │   ├── INTEGRATION.md
+│   │   ├── HANDOFF_MANIFEST.md
+│   │   └── src/
+│   │       ├── commonMain/kotlin/com/customcall/feature/customizer/
+│   │       │   ├── di/                                              # customizerModule Koin bindings
+│   │       │   ├── diagnostic/                                      # SystemDiagnosticController expect interface
+│   │       │   └── ui/                                              # CustomizerHubScreen, ThemeStudio, ContactRules, PermissionWizard
+│   │       ├── androidMain/
+│   │       │   ├── AndroidManifest.xml                              # READ_CONTACTS & OEM settings <queries>
+│   │       │   └── kotlin/com/customcall/feature/customizer/        # AndroidSystemDiagnosticController & ContactsContract picker
+│   │       ├── iosMain/kotlin/com/customcall/feature/customizer/    # IosSystemDiagnosticController stub
+│   │       ├── androidDebug/kotlin/com/customcall/feature/customizer/
+│   │       │   └── CustomizerPreviews.kt                            # Layoutlib-safe Compose @Preview suite
+│   │       └── commonTest/kotlin/com/customcall/feature/customizer/ # ThemeStudio, ContactRules & PermissionWizard VM tests
 │   │
-│   └── interceptor/                                    # [Block 6 — Pending]
-│       └── build.gradle.kts
+│   └── interceptor/                                                 # [Block 6 — Complete] Native Android call interception
+│       ├── build.gradle.kts
+│       ├── INTEGRATION.md
+│       ├── HANDOFF_MANIFEST.md
+│       └── src/
+│           ├── commonMain/kotlin/com/customcall/feature/interceptor/
+│           │   ├── action/
+│           │   │   └── PlatformCallActionExecutor.kt                # expect CallActionExecutor bridge
+│           │   ├── di/
+│           │   │   └── InterceptorModule.kt                         # interceptorModule Koin bindings
+│           │   └── session/
+│           │       ├── CallSessionRegistry.kt                       # Thread-safe active call, theme & handle cache
+│           │       └── DefaultCallEventDispatcher.kt                # CallEventDispatcher StateFlow implementation
+│           ├── androidMain/
+│           │   ├── AndroidManifest.xml                              # Call permissions, IncomingCallActivity & 3 system services
+│           │   └── kotlin/com/customcall/feature/interceptor/
+│           │       ├── action/
+│           │       │   └── PlatformCallActionExecutor.android.kt    # VoIP PendingIntent & GSM Telecom/InCall execution
+│           │       ├── cellular/
+│           │       │   ├── CellularCallStateMonitor.kt              # TelephonyCallback (API 31+) & PhoneStateListener (API 26–30)
+│           │       │   ├── CustomCallScreeningService.kt            # Non-default-dialer GSM screening (API 29+)
+│           │       │   └── CustomInCallService.kt                   # Optional full ROLE_DIALER InCallService
+│           │       ├── coordinator/
+│           │       │   └── IncomingCallCoordinator.kt               # Theme pre-resolution & lock-screen vs. overlay routing
+│           │       ├── di/
+│           │       │   └── InterceptorModule.android.kt             # Android Koin service/helper bindings
+│           │       ├── ui/
+│           │       │   ├── CallNotificationHelper.kt                # High-priority CATEGORY_CALL FullScreenIntent builder
+│           │       │   ├── CallWindowManager.kt                     # TYPE_APPLICATION_OVERLAY ComposeView window host
+│           │       │   └── IncomingCallActivity.kt                  # Wake-over-lock-screen ComponentActivity
+│           │       └── voip/
+│           │           ├── CallNotificationListenerService.kt       # WhatsApp, WA Business, Telegram & custom VoIP listener
+│           │           └── VoipNotificationParser.kt                # CATEGORY_CALL / CallStyle & PendingIntent extractor
+│           ├── iosMain/kotlin/com/customcall/feature/interceptor/
+│           │   ├── action/
+│           │   │   └── PlatformCallActionExecutor.ios.kt            # iOS CallKit-ready stub
+│           │   └── di/
+│           │       └── InterceptorModule.ios.kt                     # iOS Koin stub bindings
+│           └── androidUnitTest/kotlin/com/customcall/feature/interceptor/
+│               ├── coordinator/
+│               │   └── IncomingCallCoordinatorTest.kt               # Pre-resolution & lifecycle sync tests
+│               ├── session/
+│               │   └── CallSessionRegistryTest.kt                   # Deduplication & handle cleanup tests
+│               └── voip/
+│                   └── VoipNotificationParserTest.kt                # Built-in & custom VoIP package routing tests
 │
-└── composeApp/                                         # [Block 7 — Pending]
-    └── build.gradle.kts
+└── composeApp/                                                      # [Block 7 — Next] Root app, Koin DI graph, navigation & release
+    ├── build.gradle.kts
+    └── src/                                                         # Pending CustomCallApplication, App navigation & ProGuard rules
